@@ -12,11 +12,11 @@ body:
   - type: dropdown
     id: activedev
     attributes:
-      label: Code status
+      label: Active Development
       description: Is the code or tool in active development? (If inactive, please consider whether a replacement tool in active development would be more appropriate to onboard to the toolbox).
       options:
-        - Active
-        - Inactive
+        - "Yes"
+        - "No"
     validations:
       required: true
     # Links to the Tool
@@ -32,33 +32,43 @@ body:
     validations:
       required: true
   - type: input
-    id: modelabbrev
+    id: toolabbreviation
     attributes:
       label: Tool abbreviation
       placeholder: SS3
     validations:
       required: true
   - type: input
-    id: authorname
+    id: authors
     attributes:
-      label: Tool author(s)
-      description: Please include in the format provided
+      label: Author(s)
+      description: Please include tool author names in the format provided.
       placeholder: Richard Methot, Ian Taylor, Kelli Johnson
+    validations:
+      required: true
+  - type: dropdown
+    id: noaainternal
+    attributes:
+      label: NOAA Internal
+      description: Is this tool maintained by NOAA employees or affiliates?
+      options:
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: input
     id: maintainername
     attributes:
-      label: Tool maintainer
-      description: Please include in the format provided
+      label: Maintainer Name
+      description: Please include the primary maintainer's name in the format provided.
       placeholder: Richard Methot
     validations:
       required: true
   - type: input
     id: contact
     attributes:
-      label: Contact
-      description: Email address of maintainer for this tool
+      label: Maintainer Email
+      description: Email address of primary maintainer for this tool.
       placeholder: fisheries.toolbox@noaa.gov
     validations:
       required: true
@@ -74,7 +84,7 @@ body:
     id: citelink
     attributes:
       label: Citation
-      description: Let users know how to cite the tool. Preferably, link a reference article with DOI for the tool.
+      description: Let users know how to cite the tool. Preferably, a link to the DOI for an article.
       placeholder: https://doi.org/10.1016/j.fishres.2012.10.012
     validations:
       required: true
@@ -82,22 +92,22 @@ body:
     id: references
     attributes:
       label: References
-      description: References related to the tool, include name and DOI
-      placeholder: "Stock synthesis: A biological and statistical framework for fish stock assessment and fishery management, https://doi.org/10.1016/j.fishres.2012.10.012"
+      description: Link to References related to the tool, preferably the link to the DOI, if available.
+      placeholder: "https://doi.org/10.1016/j.fishres.2012.10.012"
     validations:
       required: false
   - type: textarea
     id: associatedtools
     attributes:
       label: Associated Tools
-      description: Provide name and link of any associated tools in format of example shown below
+      description: Provide names and links of any associated tools in format of example shown below.
       placeholder: r4ss https://r4ss.github.io/r4ss/, ss3sim https://ss3sim.github.io/ss3sim/
     validations:
       required: false
   - type: input
-    id: orgs
+    id: userorganizations
     attributes:
-      label: Organizations
+      label: User Organizations
       description: List all science organizations that use this tool operationally (e.g., NOAA science centers, Regional Fishery Management Organizations)
       placeholder: NOAA Northwest Fisheries Science Center, NOAA Southeast Fisheries Science Center, NOAA Southwest Fisheries Science Center
     validations:
@@ -111,35 +121,37 @@ body:
   - type: input
     id: onlineapplink
     attributes:
-      label: Link to online application
+      label: Online App Link
       placeholder: https://connect.fisheries.noaa.gov/DLMapper/
     validations:
       required: false
   - type: input
     id: exelink
     attributes:
-      label: Link to download executable(s)
+      label: Executable Link
+      description: Link the the executable(s) for the tool, if available.
       placeholder: https://github.com/nmfs-fish-tools/SSMSE/releases
     validations:
       required: false
   - type: input
     id: websitelink
     attributes:
-      label: Link to tool website
+      label: Website Link
+      description: Link to the tool's website, if available.
       placeholder: https://vlab.noaa.gov/web/stock-synthesis
     validations:
       required: false            
   - type: input
     id: documentationlink
     attributes:
-      label: Link to documentation
+      label: Documentation Link
       placeholder: https://nmfs-fish-tools.github.io/SSMSE/manual/
     validations:
       required: false
   - type: input
     id: sourcecodelink
     attributes:
-      label: Link to source code
+      label: Source Code Link
       placeholder: https://github.com/nmfs-fish-tools/SSMSE
     validations:
       required: false
@@ -150,14 +162,14 @@ body:
   - type: input
     id: pdflink
     attributes:
-      label: PDF to download
+      label: PDF Download Link
       description: If you would like to add a link to a pdf to download (e.g., documentation or a publication), please add a link below. Please make sure this PDF is [508 compliant](https://www.section508.gov/create/pdfs/).
     validations:
       required: false
   - type: textarea
     id: badges
     attributes:
-      label: Links to badges
+      label: Software Badges
       description:  Add up to 3 [badges](https://shields.io/) that you would like displayed. Separate them with commas.
       placeholder: https://www.repostatus.org/badges/latest/active.svg, https://img.shields.io/badge/platform-linux%20%7Cwin-lightgrey
     validations:
@@ -239,12 +251,12 @@ body:
   - type: dropdown
     id: releases
     attributes:
-      label: Github Releases
-      description: Does the codebase use releases on GitHub? (If not, we HIGHLY recommend considering using releases to keep the version number on the toolbox up to date)
+      label: Uses Github Releases
+      description: Does the codebase use releases on GitHub? Must include Source Code Link above if answering yes. (If not, we HIGHLY recommend considering using releases to keep the version number on the toolbox up to date)
       options: 
         - "Yes"
         - "No"
-        - I plan to use them in the future
+        - "I plan to use them in the near future"
     validations:
       required: true
   - type: input
