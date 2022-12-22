@@ -1,0 +1,277 @@
+name: Onboard Request
+description: Request that a software tool be onboarded to the NOAA Fisheries Integrated Toolbox (FIT).
+title: "Onboard Request: [tool name] "
+labels: ["Onboard Request"]
+assignees:
+  - k-doering-NOAA
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a tool onboard request to FIT! Please take a look at the [onboarding slidedeck](https://noaa-fisheries-integrated-toolbox.github.io/FIT-Onboarding-Presentation/) for details about the onboarding process.
+  - type: dropdown
+    id: activedev
+    attributes:
+      label: Code status
+      description: Is the code or tool in active development? (If inactive, please consider whether a replacement tool in active development would be more appropriate to onboard to the toolbox).
+      options:
+        - Active
+        - Inactive
+    validations:
+      required: true
+    # Links to the Tool
+  - type: markdown
+    attributes:
+      value: |
+        ## Basic Tool Metadata
+  - type: input
+    id: toolname
+    attributes:
+      label: Tool name
+      placeholder: Stock Synthesis
+    validations:
+      required: true
+  - type: input
+    id: modelabbrev
+    attributes:
+      label: Tool abbreviation
+      placeholder: SS3
+    validations:
+      required: true
+  - type: input
+    id: authorname
+    attributes:
+      label: Tool author(s)
+      description: Please include in the format provided
+      placeholder: Richard Methot, Ian Taylor, Kelli Johnson
+    validations:
+      required: true
+  - type: input
+    id: maintainername
+    attributes:
+      label: Tool maintainer
+      description: Please include in the format provided
+      placeholder: Richard Methot
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact
+      description: Email address of maintainer for this tool
+      placeholder: fisheries.toolbox@noaa.gov
+    validations:
+      required: true
+  - type: textarea
+    id: background
+    attributes:
+      label: Background Text
+      description: One paragraph general description of the tool for users. This will be the main text on the model landing page.
+      placeholder: The Age Structured Assessment Program (ASAP) is an age-structured model that uses forward computations assuming separability of fishing mortality into year and age components to estimate population sizes given observed catches, catch-at-age, and indices of abundance. Discards can be treated explicitly. The separability assumption is relaxed by allowing for fleet-specific computations and by allowing the selectivity at age to change smoothly over time or in blocks of years. The software can also allow the catchability associated with each abundance index to vary smoothly with time. The problem’s dimensions (number of ages, years, fleets and abundance indices) are defined at input and limited by hardware only. The input is arranged assuming data is available for most years, but missing years are allowed. The model currently does not allow use of length data nor indices of survival rates. Diagnostics include index fits, residuals in catch and catch-at-age, and effective sample size calculations. Weights are input for different components of the objective function and allow for relatively simple age-structured production model type models up to fully parameterized models. The calculation engine was built using AD Model Builder by Drs. Christopher M. Legault (currently at the NMFS Northeast Fisheries Science Center) and Victor R. Restrepo (currently at the NMFS Southeast Fisheries Science Center). ASAP has been used as an assessment tool for red grouper (SEFSC), yellowtail flounder (NEFSC), Pacific sardine (SWFSC), Pacific mackerel (SWFSC), Greenland halibut (ICES), Norther Gulf of St. Lawrence cod (DFO), Gulf of Maine cod (NEFSC), Florida lobster (FFWCC), and fluke (NEFSC).
+    validations:
+      required: true
+  - type: input
+    id: citelink
+    attributes:
+      label: Citation
+      description: Let users know how to cite the tool. Preferably, link a reference article with DOI for the tool.
+      placeholder: https://doi.org/10.1016/j.fishres.2012.10.012
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: References related to the tool, include name and DOI
+      placeholder: "Stock synthesis: A biological and statistical framework for fish stock assessment and fishery management, https://doi.org/10.1016/j.fishres.2012.10.012"
+    validations:
+      required: false
+  - type: textarea
+    id: associatedtools
+    attributes:
+      label: Associated Tools
+      description: Provide name and link of any associated tools in format of example shown below
+      placeholder: r4ss https://r4ss.github.io/r4ss/, ss3sim https://ss3sim.github.io/ss3sim/
+    validations:
+      required: false
+  - type: input
+    id: orgs
+    attributes:
+      label: Organizations
+      description: List all science organizations that use this tool operationally (e.g., NOAA science centers, Regional Fishery Management Organizations)
+      placeholder: NOAA Northwest Fisheries Science Center, NOAA Southeast Fisheries Science Center, NOAA Southwest Fisheries Science Center
+    validations:
+      required: false
+  # Links to the Tool
+  - type: markdown
+    attributes:
+      value: |
+        ## Links To the Tool
+        Please provide as many as applicable. At least 1 link is required in order to onboard to FIT.
+  - type: input
+    id: onlineapplink
+    attributes:
+      label: Link to online application
+      placeholder: https://connect.fisheries.noaa.gov/DLMapper/
+    validations:
+      required: false
+  - type: input
+    id: exelink
+    attributes:
+      label: Link to download executable(s)
+      placeholder: https://github.com/nmfs-fish-tools/SSMSE/releases
+    validations:
+      required: false
+  - type: input
+    id: websitelink
+    attributes:
+      label: Link to tool website
+      placeholder: https://vlab.noaa.gov/web/stock-synthesis
+    validations:
+      required: false            
+  - type: input
+    id: documentationlink
+    attributes:
+      label: Link to documentation
+      placeholder: https://nmfs-fish-tools.github.io/SSMSE/manual/
+    validations:
+      required: false
+  - type: input
+    id: sourcecodelink
+    attributes:
+      label: Link to source code
+      placeholder: https://github.com/nmfs-fish-tools/SSMSE
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ## Detailed Tool Metadata
+  - type: input
+    id: pdflink
+    attributes:
+      label: PDF to download
+      description: If you would like to add a link to a pdf to download (e.g., documentation or a publication), please add a link below. Please make sure this PDF is [508 compliant](https://www.section508.gov/create/pdfs/).
+    validations:
+      required: false
+  - type: textarea
+    id: badges
+    attributes:
+      label: Links to badges
+      description:  Add up to 3 [badges](https://shields.io/) that you would like displayed. Separate them with commas.
+      placeholder: https://www.repostatus.org/badges/latest/active.svg, https://img.shields.io/badge/platform-linux%20%7Cwin-lightgrey
+    validations:
+      required: false
+  - type: checkboxes
+    id: drawer
+    attributes:
+      label: Toolbox Drawers
+      description: Which drawer(s) of the toolbox does this tool belong in? Check any that apply.
+      options:
+        - label: Ecosystems
+        - label: Fish and Fisheries
+        - label: Human Dimensions
+        - label: Protected Species
+        - label: General Modeling and Productivity Tools
+  - type: checkboxes
+    id: keywords
+    attributes:
+      label: Keywords
+      description: Check up to 5 keywords that describe the tool. Have additional keyword suggestions? Include in the questions and comments section.
+      options:
+        - label: "ADMB"
+        - label: "Age Structured Model"
+        - label: "Bayesian Modeling"
+        - label: "Bycatch"
+        - label: "C++"
+        - label: "Calculator"
+        - label: "Data Exploration"
+        - label: "Data Limited Method"
+        - label: "Data Visualization"
+        - label: "Decision Support Tool"
+        - label: "Developer Utilities"
+        - label: "Economics"
+        - label: "Ecosystem"
+        - label: "Ensemble Modeling"
+        - label: "Fish Biology"
+        - label: "Fisheries"
+        - label: "Gradient Solver"
+        - label: "Guided User Interface"
+        - label: "Individual Based Model"
+        - label: "Legacy Tool"
+        - label: "Length Structured Model"
+        - label: "Management Strategy Evaluation"
+        - label: "Marine Mammals"
+        - label: "Maximum Likelihood Estimation"
+        - label: "Model Builder"
+        - label: "Model Comparision"
+        - label: "Multispecies Model"
+        - label: "Natural Mortality Model"
+        - label: "NOAA Branding"
+        - label: "North Pacific"
+        - label: "Output Visualization"
+        - label: "Projection Modeling"
+        - label: "R Package"
+        - label: "Reference Points Model"
+        - label: "Risk Assessment Tool"
+        - label: "Salmon"
+        - label: "Sampling Decision Tool"
+        - label: "Shiny"
+        - label: "Simulation"
+        - label: "Size Spectra Model"
+        - label: "Size Structured Model"
+        - label: "Socioeconomics"
+        - label: "Spatial Model"
+        - label: "Species Distribution Model"
+        - label: "Standardized Reporting"
+        - label: "Stock Assessment Model"
+        - label: "Stock Assessment Projections"
+        - label: "Stock Assessment Tool"
+        - label: "Surplus Production Model"
+        - label: "Tag Data Model"
+        - label: "Teaching Tool"
+        - label: "Time Series"
+        - label: "TMB"
+        - label: "User Utilities"
+        - label: "Virtual Population Analysis"
+        - label: "Visualization"
+        - label: "Web App"
+  - type: dropdown
+    id: releases
+    attributes:
+      label: Github Releases
+      description: Does the codebase use releases on GitHub? (If not, we HIGHLY recommend considering using releases to keep the version number on the toolbox up to date)
+      options: 
+        - "Yes"
+        - "No"
+        - I plan to use them in the future
+    validations:
+      required: true
+  - type: input
+    id: versionnumber
+    attributes:
+      label: Static version number
+      description: If not using GitHub releases and the version number is not likely to change, please add the latest version number. Please don't provide a version number if it will change frequently, as we don't have a good way to make sure it stays up to date if not using GitHub releases.
+      placeholder: 0.9.0
+    validations:
+      required: false
+  - type: textarea
+    id: comments
+    attributes:
+      label: Comments
+      description: Please add any additional questions or comments
+      placeholder:
+    validations:
+      required: false
+  # - type: checkboxes
+  #   id: langs
+  #   attributes:
+  #     label: which language(s) is the tool written in? (note: could pull this from github meta data)
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/nmfs-fish-tools/Resources/blob/main/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow the FIT's [Code of Conduct](https://github.com/nmfs-fish-tools/Resources/blob/main/CODE_OF_CONDUCT.md)
+          required: true
