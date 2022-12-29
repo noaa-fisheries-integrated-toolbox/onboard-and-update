@@ -1,17 +1,13 @@
-# 
-
-name: create JSON
 # # Convert info from a Github issue from the onboarding form into json.
+name: create JSON
 on:
   issues:
     types: [opened, edited]
 
 jobs:
-  # This workflow contains a single job called "build"
   create-json:
-    # The type of runner that the job will run on
+    if: contains(github.event.issue.labels.*.name, 'Onboarding Request')
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -43,7 +39,7 @@ jobs:
           # break up different form sections
           issue_body <- strsplit(issue_body, "### ", fixed = TRUE)[[1]]
           # break up headers from content
-          issue_body <- strsplit(issue_body, "\n\n", fixed = TRUE)
+          issue_body <- strsplit(issue_body, "(\n\n)|(\r\n\r\n)")
 
           # rm no response components
           issue_body <- lapply(issue_body, function(x) {
