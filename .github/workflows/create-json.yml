@@ -153,7 +153,7 @@ jobs:
           # to write to a file:
           #jsonlite::write_json(issue_body, "test.JSON", pretty = TRUE)
 
-          markdown_txt <- paste("```",
+          markdown_txt <- paste("Automatically generated JSON for the onboarding request: ", "```",
           jsonlite::toJSON(issue_body, pretty = TRUE), 
           "```", sep = "\n"
           )
