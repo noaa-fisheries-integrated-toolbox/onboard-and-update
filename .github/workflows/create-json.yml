@@ -1,17 +1,10 @@
-# This is a basic workflow to help you get started with Actions
+# 
 
 name: create JSON
-
-# Controls when the workflow will run
+# # Convert info from a Github issue from the onboarding form into json.
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  workflow_dispatch:
-  # would want to switch to this later on because we will want to 
-  # run when an onboarding request is opened and submitted as an issue.
-  # issues:
-  #   types:
-  #     - opened
-  #     - labeled
+  issues:
+    types: [opened, edited]
 
 jobs:
   # This workflow contains a single job called "build"
@@ -37,18 +30,13 @@ jobs:
 
       - name: run R script
         run: |
-          # Convert info from a Github issue into json. This is
-          # an important step toward making the toolbox 
-          # onboarding automated.
-          
-          # Note that this is currently coded as an example for one repo only.
           library(gh)
           library(jsonlite)
 
           issue_info <- gh("/repos/{owner}/{repo}/issues/{issue_number}",
           owner = "noaa-fisheries-integrated-toolbox", 
           repo = "onboard-and-update",
-          issue_number = "1"
+          issue_number = ${{ github.event.issue.number }}
           )
           issue_body <- issue_info$body
 
@@ -88,7 +76,6 @@ jobs:
           issue_body$code_of_conduct <- NULL
 
           # Now make changes needed for specific elements to be correct in JSON.
-          # Then we may need some custom work to convert the arrays.
 
           # Format boolean inputs
           issue_body$active_development <-
@@ -179,6 +166,6 @@ jobs:
           gh("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", 
             owner = "noaa-fisheries-integrated-toolbox",
             repo = "onboard-and-update", 
-            issue_number = 1, 
+            issue_number = ${{ github.event.issue.number }}, 
             body = markdown_txt)
         shell: Rscript {0}
