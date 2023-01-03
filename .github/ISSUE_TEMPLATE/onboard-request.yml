@@ -170,7 +170,7 @@ body:
     id: badges
     attributes:
       label: Software Badges
-      description:  Add up to 3 [badges](https://shields.io/) that you would like displayed. Separate them with commas.
+      description:  Add up to 3 [badges](https://shields.io/) that you would like displayed. Separate them with commas. Badges typically come from [shields.io](https://shields.io/), [repostatus.org](https://www.repostatus.org/), or [GitHub actions](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge)
       placeholder: https://www.repostatus.org/badges/latest/active.svg, https://img.shields.io/badge/platform-linux%20%7Cwin-lightgrey
     validations:
       required: false
