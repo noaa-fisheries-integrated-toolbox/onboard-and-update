@@ -167,7 +167,7 @@ jobs:
           # write json to  file
           newjson <- "newjson"
           dir.create(newjson)
-          writeLines(markdown_txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".JSON")))
+          writeLines(markdown_txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".json")))
         shell: Rscript {0}
 
       - name: checkout toolbox_web_templating repo
@@ -186,7 +186,7 @@ jobs:
           config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
           json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
           config$list_of_models <- c(config$list_of_models, json_no_file_ext)
-          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE)
+          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE, auto_unbox = TRUE)
         shell: Rscript {0}
 
       # - name: submit pull request to the toolbox_web_templating repo
