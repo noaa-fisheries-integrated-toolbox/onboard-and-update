@@ -11,6 +11,13 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
+
+      - name: checkout toolbox_web_templating repo
+        uses: actions/checkout@v3
+        with:
+          repository: noaa-fisheries-integrated-toolbox/toolbox_web_templating
+          ref: dev
+
       - name: install R
         uses: r-lib/actions/setup-r@v2
 
@@ -171,11 +178,7 @@ jobs:
           print(list.files(newjson))
         shell: Rscript {0}
 
-      - name: checkout toolbox_web_templating repo
-        uses: actions/checkout@v3
-        with:
-          repository: noaa-fisheries-integrated-toolbox/toolbox_web_templating
-          ref: dev
+
       
       - name: add new json to the toolbox web templating
         run: |
@@ -220,7 +223,7 @@ jobs:
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, config file'
           destination_branch: 'dev'
-          destination_branch_create: onboarding2
+          destination_branch_create: onboarding3
       - name: Pushes file to repo branch
         continue-on-error: true
         uses: dmnemec/copy_file_to_another_repo_action@main
@@ -233,7 +236,7 @@ jobs:
           user_email: 'kathryn.doering@noaa.gov'
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, model json files'
-          destination_branch: onboarding2
+          destination_branch: onboarding3
       - name: 'Create Pull Request'
         continue-on-error: true
         uses: actions/github-script@v6
@@ -243,7 +246,7 @@ jobs:
                 github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
                                         repo: 'toolbox_web_templating',
                                         title: 'Onboard new tool',
-                                        head: 'onboarding2', 
+                                        head: 'onboarding3', 
                                         base: 'dev'});
                                         
           
