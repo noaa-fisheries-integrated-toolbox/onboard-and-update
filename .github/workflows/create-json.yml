@@ -168,6 +168,7 @@ jobs:
           newjson <- "newjson"
           dir.create(newjson)
           writeLines(markdown_txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".json")))
+          print(list.files(newjson))
         shell: Rscript {0}
 
       - name: checkout toolbox_web_templating repo
@@ -180,8 +181,10 @@ jobs:
         run: |
           # add json file(s)
           json <- list.files("newjson")
+          print(json)
           json <- grep(".json", json, fixed = TRUE, value = TRUE)
-          file.copy(from = file.path("newjson", json), to = file.path("model_list_dir"), overwrite = FALSE)
+          file.copy(from = file.path("newjson", json), to = file.path("model_list_dir", json), overwrite = FALSE)
+          print(list.files("model_list_dir"))
           # add json file name to browse_config.json
           config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
           json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
@@ -217,7 +220,7 @@ jobs:
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, config file'
           destination_branch: 'dev'
-          destination_branch_create: 'onboarding'
+          destination_branch_create: onboarding2
       - name: Pushes file to repo branch
         continue-on-error: true
         uses: dmnemec/copy_file_to_another_repo_action@main
@@ -230,7 +233,7 @@ jobs:
           user_email: 'kathryn.doering@noaa.gov'
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, model json files'
-          destination_branch: 'onboarding'
+          destination_branch: onboarding2
       - name: 'Create Pull Request'
         continue-on-error: true
         uses: actions/github-script@v6
@@ -240,7 +243,7 @@ jobs:
                 github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
                                         repo: 'toolbox_web_templating',
                                         title: 'Onboard new tool',
-                                        head: 'onboarding', 
+                                        head: 'onboarding2', 
                                         base: 'dev'});
                                         
           
