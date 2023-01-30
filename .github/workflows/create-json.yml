@@ -190,19 +190,57 @@ jobs:
           jsonlite::write_json(config, file.path("templating", "Browse_config.json"))
         shell: Rscript {0}
 
-      - name: submit pull request to the toolbox_web_templating repo
-        uses: peter-evans/create-pull-request@v4
+      # - name: submit pull request to the toolbox_web_templating repo
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     token: API_TOKEN_GITHUB
+      #     path: templating
+      #     add-paths: templating/Browse_config.json, templating/model_list_dir/*.json
+      #     committer: Kathryn Doering <kathryn.doering@noaa.gov>
+      #     author: Kathryn Doering <kathryn.doering@noaa.gov>
+      #     commit-message: 'Onboard new tool'
+      #     branch: onboard-new-tool
+      #     base: dev
+      #     title: 'Onboard new tool'
+      #     body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
+      #     reviewers: k-doering-NOAA
+      
+      - name: Pushes file to repo branch
+        continue-on-error: true
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          token: API_TOKEN_GITHUB
-          path: templating
-          add-paths: templating/Browse_config.json, templating/model_list_dir/*.json
-          committer: Kathryn Doering <kathryn.doering@noaa.gov>
-          author: Kathryn Doering <kathryn.doering@noaa.gov>
-          commit-message: 'Onboard new tool'
-          branch: onboard-new-tool
-          base: dev
-          title: 'Onboard new tool'
-          body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
-          reviewers: k-doering-NOAA
-
-        
+          source_file: 'templating/Browse_config.json'
+          destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
+          destination_folder: '.'
+          user_email: 'kathryn.doering@noaa.gov'
+          user_name: 'k-doering-NOAA'
+          commit_message: 'onboard new tool, config file'
+          destination_branch_create: 'onboarding'
+      - name: Pushes file to repo branch
+        continue-on-error: true
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'templating/model_list_dir'
+          destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
+          destination_folder: 'model_list_dir'
+          user_email: 'kathryn.doering@noaa.gov'
+          user_name: 'k-doering-NOAA'
+          commit_message: 'onboard new tool, model json files'
+          destination_branch: 'onboarding'
+      - name: 'Create Pull Request'
+        continue-on-error: true
+        uses: actions/github-script@v6
+        with:
+            github-token: ${{ secrets.API_TOKEN_GITHUB }}
+            script: |
+                github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
+                                        repo: 'toolbox_web_templating',
+                                        title: 'Onboard new tool',
+                                        head: 'onboarding', 
+                                        base: 'dev'});
+                                        
+          
