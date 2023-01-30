@@ -92,7 +92,7 @@ body:
     id: references
     attributes:
       label: References
-      description: Link to References related to the tool, preferably the link to the DOI, if available.
+      description: Link to References related to the tool, preferably the link to the DOI, if available. If there are multiple references, please put one per line (press enter between references)
       placeholder: "https://doi.org/10.1016/j.fishres.2012.10.012"
     validations:
       required: false
