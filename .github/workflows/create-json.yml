@@ -23,7 +23,7 @@ jobs:
          install.packages("jsonlite")
          install.packages("rlang")
         shell: Rscript {0}
-
+        
       - name: run R script
         run: |
           library(gh)
@@ -170,36 +170,36 @@ jobs:
           writeLines(markdown_txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".JSON")))
         shell: Rscript {0}
 
-        - name: checkout toolbox_web_templating repo
-          uses: actions/checkout@v3
-          with:
-            repository: noaa-fisheries-integrated-toolbox/toolbox_web_templating
-            path: templating
+      - name: checkout toolbox_web_templating repo
+        uses: actions/checkout@v3
+        with:
+          repository: noaa-fisheries-integrated-toolbox/toolbox_web_templating
+          path: templating
       
-        - name: add new json to the toolbox web templating
-          run: |
-            # add json file(s)
-            json <- list.files("newjson")
-            json <- grep(".json", json, fixed = TRUE, value = TRUE)
-            file.copy(from = file.path("newjson", json), to = file.path("templating", "model_list_dir"), overwrite = FALSE)
-            # add json file name to browse_config.json
-            config <- jsonlite::read_json(file.path("templating", "Browse_config.json"))
-            json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
-            config$list_of_models <- c(config$list_of_models, json_no_file_ext)
-            jsonlite::write_json(config, file.path("templating", "Browse_config.json"))
-          shell: Rscript {0}
+      - name: add new json to the toolbox web templating
+        run: |
+          # add json file(s)
+          json <- list.files("newjson")
+          json <- grep(".json", json, fixed = TRUE, value = TRUE)
+          file.copy(from = file.path("newjson", json), to = file.path("templating", "model_list_dir"), overwrite = FALSE)
+          # add json file name to browse_config.json
+          config <- jsonlite::read_json(file.path("templating", "Browse_config.json"))
+          json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
+          config$list_of_models <- c(config$list_of_models, json_no_file_ext)
+          jsonlite::write_json(config, file.path("templating", "Browse_config.json"))
+        shell: Rscript {0}
 
-        - name: submit pull request to the toolbox_web_templating repo
-          uses: peter-evans/create-pull-request@v4
-          with:
-            token: API_TOKEN_GITHUB
-            path: templating
-            add-paths: templating/Browse_config.json, templating/model_list_dir/*.json
-            commit-message: 'Onboard new tool'
-            branch: onboard-new-tool
-            base: dev
-            title: 'Onboard new tool'
-            body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
-            reviewers: k-doering-NOAA
+      - name: submit pull request to the toolbox_web_templating repo
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: API_TOKEN_GITHUB
+          path: templating
+          add-paths: templating/Browse_config.json, templating/model_list_dir/*.json
+          commit-message: 'Onboard new tool'
+          branch: onboard-new-tool
+          base: dev
+          title: 'Onboard new tool'
+          body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
+          reviewers: k-doering-NOAA
 
         
