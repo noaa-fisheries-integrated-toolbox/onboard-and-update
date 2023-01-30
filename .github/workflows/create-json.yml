@@ -196,6 +196,8 @@ jobs:
           token: API_TOKEN_GITHUB
           path: templating
           add-paths: templating/Browse_config.json, templating/model_list_dir/*.json
+          committer: Kathryn Doering <kathryn.doering@noaa.gov>
+          author: Kathryn Doering <kathryn.doering@noaa.gov>
           commit-message: 'Onboard new tool'
           branch: onboard-new-tool
           base: dev
