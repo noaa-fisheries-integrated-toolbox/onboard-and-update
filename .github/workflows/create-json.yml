@@ -183,10 +183,10 @@ jobs:
           json <- grep(".json", json, fixed = TRUE, value = TRUE)
           file.copy(from = file.path("newjson", json), to = file.path("model_list_dir"), overwrite = FALSE)
           # add json file name to browse_config.json
-          config <- jsonlite::read_json(file.path("Browse_config.json"))
+          config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
           json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
           config$list_of_models <- c(config$list_of_models, json_no_file_ext)
-          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE)
+          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE)
         shell: Rscript {0}
 
       # - name: submit pull request to the toolbox_web_templating repo
