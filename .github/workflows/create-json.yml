@@ -75,11 +75,11 @@ jobs:
 
           # Format boolean inputs
           issue_body$active_development <-
-            ifelse(issue_body$active_development == "Yes","true", "false")
+            ifelse(issue_body$active_development == "Yes",TRUE, FALSE)
           issue_body$noaa_internal <- 
-            ifelse(issue_body$noaa_internal == "Yes","true", "false")
+            ifelse(issue_body$noaa_internal == "Yes", TRUE, FALSE)
           issue_body$uses_github_releases <- 
-            ifelse(issue_body$uses_github_releases == "Yes", "true", "false")
+            ifelse(issue_body$uses_github_releases == "Yes", TRUE, FALSE)
 
           # format toolbox drawers and keywords
           format_checkboxes <- function(original_checkboxes) {
