@@ -175,19 +175,18 @@ jobs:
         with:
           repository: noaa-fisheries-integrated-toolbox/toolbox_web_templating
           ref: dev
-          path: templating
       
       - name: add new json to the toolbox web templating
         run: |
           # add json file(s)
           json <- list.files("newjson")
           json <- grep(".json", json, fixed = TRUE, value = TRUE)
-          file.copy(from = file.path("newjson", json), to = file.path("templating", "model_list_dir"), overwrite = FALSE)
+          file.copy(from = file.path("newjson", json), to = file.path("model_list_dir"), overwrite = FALSE)
           # add json file name to browse_config.json
-          config <- jsonlite::read_json(file.path("templating", "Browse_config.json"))
+          config <- jsonlite::read_json(file.path("Browse_config.json"))
           json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
           config$list_of_models <- c(config$list_of_models, json_no_file_ext)
-          jsonlite::write_json(config, file.path("templating", "Browse_config.json"))
+          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE)
         shell: Rscript {0}
 
       # - name: submit pull request to the toolbox_web_templating repo
@@ -204,19 +203,20 @@ jobs:
       #     title: 'Onboard new tool'
       #     body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
       #     reviewers: k-doering-NOAA
-      
+
       - name: Pushes file to repo branch
         continue-on-error: true
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'templating/Browse_config.json'
+          source_file: 'Browse_config.json'
           destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
           destination_folder: '.'
           user_email: 'kathryn.doering@noaa.gov'
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, config file'
+          destination_branch: 'dev'
           destination_branch_create: 'onboarding'
       - name: Pushes file to repo branch
         continue-on-error: true
@@ -224,9 +224,9 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'templating/model_list_dir'
+          source_file: 'model_list_dir'
           destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
-          destination_folder: 'model_list_dir'
+          destination_folder: '.'
           user_email: 'kathryn.doering@noaa.gov'
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, model json files'
