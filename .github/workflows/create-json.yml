@@ -159,7 +159,6 @@ jobs:
 
           # to write to a file:
           #jsonlite::write_json(issue_body, "test.JSON", pretty = TRUE)
-
           markdown_txt <- paste("Automatically generated JSON for the onboarding request: ", "```",
           jsonlite::toJSON(issue_body, pretty = TRUE), 
           "```", sep = "\n"
@@ -174,20 +173,16 @@ jobs:
           # write json to  file
           newjson <- "newjson"
           dir.create(newjson)
-          writeLines(markdown_txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".json")))
-          print(list.files(newjson))
+          txt <- jsonlite::toJSON(issue_body, pretty = TRUE)
+          writeLines(txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".json")))
         shell: Rscript {0}
-
-
       
       - name: add new json to the toolbox web templating
         run: |
           # add json file(s)
           json <- list.files("newjson")
-          print(json)
           json <- grep(".json", json, fixed = TRUE, value = TRUE)
           file.copy(from = file.path("newjson", json), to = file.path("model_list_dir", json), overwrite = FALSE)
-          print(list.files("model_list_dir"))
           # add json file name to browse_config.json
           config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
           json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
@@ -223,7 +218,7 @@ jobs:
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, config file'
           destination_branch: 'dev'
-          destination_branch_create: onboarding3
+          destination_branch_create: onboarding4
       - name: Pushes file to repo branch
         continue-on-error: true
         uses: dmnemec/copy_file_to_another_repo_action@main
@@ -236,7 +231,7 @@ jobs:
           user_email: 'kathryn.doering@noaa.gov'
           user_name: 'k-doering-NOAA'
           commit_message: 'onboard new tool, model json files'
-          destination_branch: onboarding3
+          destination_branch: onboarding4
       - name: 'Create Pull Request'
         continue-on-error: true
         uses: actions/github-script@v6
@@ -246,7 +241,7 @@ jobs:
                 github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
                                         repo: 'toolbox_web_templating',
                                         title: 'Onboard new tool',
-                                        head: 'onboarding3', 
+                                        head: 'onboarding4', 
                                         base: 'dev'});
                                         
           
