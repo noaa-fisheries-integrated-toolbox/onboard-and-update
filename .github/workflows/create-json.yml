@@ -244,8 +244,8 @@ jobs:
                 github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
                                         repo: 'toolbox_web_templating',
                                         title: 'Onboard new tool',
-                                        head: 'onboarding${{context.issue.number}}',
-                                        body: 'Info based on https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/${{context.issue.number}}'
+                                        head: 'onboarding${context.issue.number}',
+                                        body: 'Info based on https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/${context.issue.number}'
                                         base: 'dev'});
                                         
           
