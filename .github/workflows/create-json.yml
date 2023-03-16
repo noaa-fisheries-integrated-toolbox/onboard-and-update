@@ -167,26 +167,26 @@ jobs:
           markdown_txt <- paste("Automatically generated JSON for the onboarding request: ", "```",
             txt, "```", sep = "\n"
           )
-          # # post json as a comment on the issue
-          # gh("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", 
-          #   owner = "noaa-fisheries-integrated-toolbox",
-          #   repo = "onboard-and-update", 
-          #   issue_number = ${{ github.event.issue.number }}, 
-          #   body = markdown_txt)
+          # post json as a comment on the issue
+          gh("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", 
+            owner = "noaa-fisheries-integrated-toolbox",
+            repo = "onboard-and-update", 
+            issue_number = ${{ github.event.issue.number }}, 
+            body = markdown_txt)
 
-          # open an issue in the templating repo
-          issue_external <- paste(
-            paste0("Onboarding request from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/", issue_info$number),
-           "Automatically generated JSON for the onboarding request: ", "```",
-            txt, "```", sep = "\n")
+          # # open an issue in the templating repo - this works great!
+          # issue_external <- paste(
+          #   paste0("Onboarding request from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/", issue_info$number),
+          #  "Automatically generated JSON for the onboarding request: ", "```",
+          #   txt, "```", sep = "\n")
 
-          issue_title <- paste0("Onboard new tool from onboard-and-update: # ", issue_info$number)
+          # issue_title <- paste0("Onboard new tool from onboard-and-update: # ", issue_info$number)
 
-            gh::gh("POST /repos/{owner}/{repo}/issues",
-             owner = "noaa-fisheries-integrated-toolbox", 
-             repo = "toolbox_web_templating", 
-             title = issue_title,
-             body = issue_external)
+          #   gh::gh("POST /repos/{owner}/{repo}/issues",
+          #    owner = "noaa-fisheries-integrated-toolbox", 
+          #    repo = "toolbox_web_templating", 
+          #    title = issue_title,
+          #    body = issue_external)
 
           # write json to  file
           newjson <- "newjson"
@@ -207,6 +207,7 @@ jobs:
       #     jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE, auto_unbox = TRUE)
       #   shell: Rscript {0}
 
+      # This had some issues.
       # - name: submit pull request to the toolbox_web_templating repo
       #   uses: peter-evans/create-pull-request@v4
       #   with:
@@ -222,6 +223,7 @@ jobs:
       #     body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
       #     reviewers: k-doering-NOAA
 
+      # This didn't work perfectly, unfortunately. Generates an error when run, even though it does what we want
       # - name: Pushes file to repo branch
       #   continue-on-error: true
       #   uses: dmnemec/copy_file_to_another_repo_action@main
@@ -250,7 +252,7 @@ jobs:
       #     commit_message: 'onboard new tool, model json files'
       #     destination_branch: 'onboarding${{github.event.issue.number}}'
 
-        
+      # for some reason, this does not open the pull request  
       # - name: 'Create Pull Request'
       #   continue-on-error: true
       #   uses: actions/github-script@v6
