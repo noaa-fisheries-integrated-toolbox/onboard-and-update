@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'Onboarding Request')
     runs-on: ubuntu-latest
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.API_TOKEN_GITHUB }}
     steps:
 
       - name: checkout toolbox_web_templating repo
@@ -167,12 +167,26 @@ jobs:
           markdown_txt <- paste("Automatically generated JSON for the onboarding request: ", "```",
             txt, "```", sep = "\n"
           )
-          # post json as a comment on the issue
-          gh("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", 
-            owner = "noaa-fisheries-integrated-toolbox",
-            repo = "onboard-and-update", 
-            issue_number = ${{ github.event.issue.number }}, 
-            body = markdown_txt)
+          # # post json as a comment on the issue
+          # gh("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", 
+          #   owner = "noaa-fisheries-integrated-toolbox",
+          #   repo = "onboard-and-update", 
+          #   issue_number = ${{ github.event.issue.number }}, 
+          #   body = markdown_txt)
+
+          # open an issue in the templating repo
+          issue_external <- paste(
+            paste0("Onboarding request from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/", issue_info$number),
+           "Automatically generated JSON for the onboarding request: ", "```",
+            txt, "```", sep = "\n")
+
+          issue_title <- paste0("Onboard new tool from onboard-and-update: # ", issue_info$number)
+
+            gh::gh("POST /repos/{owner}/{repo}/issues",
+             owner = "noaa-fisheries-integrated-toolbox", 
+             repo = "toolbox_web_templating", 
+             title = issue_title,
+             body = issue_external)
 
           # write json to  file
           newjson <- "newjson"
@@ -180,18 +194,18 @@ jobs:
           writeLines(txt, file.path(newjson,paste0(issue_body$tool_abbreviation, ".json")))
         shell: Rscript {0}
       
-      - name: add new json to the toolbox web templating
-        run: |
-          # add json file(s)
-          json <- list.files("newjson")
-          json <- grep(".json", json, fixed = TRUE, value = TRUE)
-          file.copy(from = file.path("newjson", json), to = file.path("model_list_dir", json), overwrite = FALSE)
-          # add json file name to browse_config.json
-          config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
-          json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
-          config$list_of_models <- c(config$list_of_models, json_no_file_ext)
-          jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE, auto_unbox = TRUE)
-        shell: Rscript {0}
+      # - name: add new json to the toolbox web templating
+      #   run: |
+      #     # add json file(s)
+      #     json <- list.files("newjson")
+      #     json <- grep(".json", json, fixed = TRUE, value = TRUE)
+      #     file.copy(from = file.path("newjson", json), to = file.path("model_list_dir", json), overwrite = FALSE)
+      #     # add json file name to browse_config.json
+      #     config <- jsonlite::read_json(file.path("Browse_config.json"), simplifyVector = TRUE)
+      #     json_no_file_ext <- gsub(".json", "", json, fixed = TRUE)
+      #     config$list_of_models <- c(config$list_of_models, json_no_file_ext)
+      #     jsonlite::write_json(config, file.path("Browse_config.json"), pretty = TRUE, simplifyVector = TRUE, auto_unbox = TRUE)
+      #   shell: Rscript {0}
 
       # - name: submit pull request to the toolbox_web_templating repo
       #   uses: peter-evans/create-pull-request@v4
@@ -208,44 +222,46 @@ jobs:
       #     body: Auto-generated from https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update
       #     reviewers: k-doering-NOAA
 
-      - name: Pushes file to repo branch
-        continue-on-error: true
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source_file: 'Browse_config.json'
-          destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
-          destination_folder: '.'
-          user_email: 'kathryn.doering@noaa.gov'
-          user_name: 'k-doering-NOAA'
-          commit_message: 'onboard new tool, config file'
-          destination_branch: 'dev'
-          destination_branch_create: 'onboarding${{github.event.issue.number}}'
-      - name: Pushes file to repo branch
-        continue-on-error: true
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source_file: 'model_list_dir'
-          destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
-          destination_folder: '.'
-          user_email: 'kathryn.doering@noaa.gov'
-          user_name: 'k-doering-NOAA'
-          commit_message: 'onboard new tool, model json files'
-          destination_branch: 'onboarding${{github.event.issue.number}}'
-      - name: 'Create Pull Request'
-        continue-on-error: true
-        uses: actions/github-script@v6
-        with:
-            github-token: ${{ secrets.API_TOKEN_GITHUB }}
-            script: |
-                github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
-                                        repo: 'toolbox_web_templating',
-                                        title: 'Onboard new tool',
-                                        head: 'onboarding${context.issue.number}',
-                                        body: 'Info based on https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/${context.issue.number}'
-                                        base: 'dev'});
+      # - name: Pushes file to repo branch
+      #   continue-on-error: true
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: 'Browse_config.json'
+      #     destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
+      #     destination_folder: '.'
+      #     user_email: 'kathryn.doering@noaa.gov'
+      #     user_name: 'k-doering-NOAA'
+      #     commit_message: 'onboard new tool, config file'
+      #     destination_branch: 'dev'
+      #     destination_branch_create: 'onboarding${{github.event.issue.number}}'
+      # - name: Pushes file to repo branch
+      #   continue-on-error: true
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: 'model_list_dir'
+      #     destination_repo: 'noaa-fisheries-integrated-toolbox/toolbox_web_templating'
+      #     destination_folder: '.'
+      #     user_email: 'kathryn.doering@noaa.gov'
+      #     user_name: 'k-doering-NOAA'
+      #     commit_message: 'onboard new tool, model json files'
+      #     destination_branch: 'onboarding${{github.event.issue.number}}'
+
+        
+      # - name: 'Create Pull Request'
+      #   continue-on-error: true
+      #   uses: actions/github-script@v6
+      #   with:
+      #       github-token: ${{ secrets.API_TOKEN_GITHUB }}
+      #       script: |
+      #           github.rest.pulls.create({owner: 'noaa-fisheries-integrated-toolbox', 
+      #                                   repo: 'toolbox_web_templating',
+      #                                   title: 'Onboard new tool',
+      #                                   head: 'onboarding${context.issue.number}',
+      #                                   body: 'Info based on https://github.com/noaa-fisheries-integrated-toolbox/onboard-and-update/issues/${context.issue.number}'
+      #                                   base: 'dev'});
                                         
           
