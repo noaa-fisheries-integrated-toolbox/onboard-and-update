@@ -164,7 +164,7 @@ jobs:
           #jsonlite::write_json(issue_body, "test.JSON", pretty = TRUE)
           txt <- jsonlite::toJSON(issue_body, pretty = TRUE)
           txt <- gsub("\\r", "", txt, fixed = TRUE)
-          markdown_txt <- paste("Automatically generated JSON for the onboarding request: ", "```",
+          markdown_txt <- paste("Automatically generated JSON for the onboarding request. Note that editing the submitted form will cause the JSON to be regenerated: ", "```",
             txt, "```", sep = "\n"
           )
           # post json as a comment on the issue
