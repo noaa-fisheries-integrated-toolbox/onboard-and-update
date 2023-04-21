@@ -8,7 +8,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for submitting a tool onboarding request to FIT! Please take a look at the [onboarding slidedeck](https://noaa-fisheries-integrated-toolbox.github.io/FIT-Onboarding-Presentation/) for details about the onboarding process. For adding links within text, please use html a tag syntax with escaped quotations (e.g., `<a href=\"https://noaa-fisheries-integrated-toolbox.github.io/\">FIT</a>`).
+        Thanks for submitting a tool onboarding request to FIT! Please take a look at the [onboarding slidedeck](https://noaa-fisheries-integrated-toolbox.github.io/FIT-Onboarding-Presentation/) for details about the onboarding process. To add links within text, please use html a tag syntax with escaped quotations (e.g., `<a href=\"https://noaa-fisheries-integrated-toolbox.github.io/\">FIT</a>`) rather than using markdown syntax. Plain URLs are also acceptable. 
   - type: dropdown
     id: activedev
     attributes:
