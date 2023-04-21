@@ -122,6 +122,7 @@ body:
     id: onlineapplink
     attributes:
       label: Online App Link
+      description: Link to the Online App. Note, if you would like to host your app on the NMFS Posit Connect Server, please note that in the comments area of the form and we will get you set up before onboarding the tool.
       placeholder: https://connect.fisheries.noaa.gov/DLMapper/
     validations:
       required: false
