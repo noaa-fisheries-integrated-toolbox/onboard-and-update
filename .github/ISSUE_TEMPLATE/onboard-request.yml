@@ -124,8 +124,8 @@ body:
     id: userorganizations
     attributes:
       label: User Organizations
-      description: List all science organizations that use this tool operationally (e.g., NOAA science centers, Regional Fishery Management Organizations)
-      placeholder: NOAA Northwest Fisheries Science Center, NOAA Southeast Fisheries Science Center, NOAA Southwest Fisheries Science Center
+      description: List the Research Organization Registry identifiers (RORs) of all science organizations that use this tool operationally (e.g., NOAA science centers, Regional Fishery Management Organizations). There is a [list of NOAA-affiliated RORs](https://docs.google.com/spreadsheets/d/1SD3s4h071Itn1XW6gFzlQjTe9Tkk9i9fP0i_8IIMKWo/edit?usp=sharing)(NOAA internal only), or RORs can be found by searching at [https://ror.org/](https://ror.org/).
+      placeholder: https://ror.org/01h7fye62, https://ror.org/05r7z1k40
     validations:
       required: false
   # Links to the Tool
