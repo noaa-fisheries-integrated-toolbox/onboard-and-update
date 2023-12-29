@@ -73,8 +73,9 @@ jobs:
           names(issue_body) <- unlist(lapply(issue_body, function(x) x[1]))
           issue_body <- lapply(issue_body, function(x) x[-1])
 
-          # Get rid of comments and code of conduct, not needed 
+          # Get rid of move source code, comments and code of conduct, not needed 
           # in the json
+          issue_body <- move_source_code <- NULL
           issue_body$comments <- NULL
           issue_body$code_of_conduct <- NULL
 

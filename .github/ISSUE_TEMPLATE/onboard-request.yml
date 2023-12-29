@@ -19,6 +19,18 @@ body:
         - "No"
     validations:
       required: true
+  - type: dropdown
+    id: githuborganization
+    attributes:
+      label: Move source code
+      description: Would you like to move your source code to be in a FIT-associated GitHub organization?
+      options:
+        - "Yes"
+        - "No"
+        - "I'd like to discuss this more"
+        - "Not applicable"
+    validations:
+      required: true
     # Links to the Tool
   - type: markdown
     attributes:
