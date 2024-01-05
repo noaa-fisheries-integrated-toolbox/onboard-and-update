@@ -2,7 +2,7 @@
 name: create JSON
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
 
 jobs:
   create-json:
